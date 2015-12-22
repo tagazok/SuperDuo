@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        >
 
         <TextView
             android:id="@+id/home_name"
@@ -21,7 +22,8 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:textColor="#111111"
-            tools:text=""/>
+            tools:text=""
+            android:contentDescription="Home team name"/>
 
         <TextView
             android:id="@+id/home_score"
@@ -30,7 +32,8 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="#111111"
-            tools:text="1"/>
+            tools:text="1"
+            android:contentDescription="Home team score"/>
 
     </LinearLayout>
 
@@ -47,7 +50,8 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:textColor="#111111"
-            tools:text="Real Madrid"/>
+            tools:text="Real Madrid"
+            android:contentDescription="Away team name"/>
 
         <TextView
             android:id="@+id/away_score"
@@ -56,7 +60,8 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textColor="#111111"
-            tools:text="1"/>
+            tools:text="1"
+            android:contentDescription="Away team score"/>
 
     </LinearLayout>
 

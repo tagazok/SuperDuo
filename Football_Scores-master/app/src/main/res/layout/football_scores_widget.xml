@@ -16,9 +16,9 @@
         android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:background="#ffffff"
-        android:contentDescription="No fixture for day"
+        android:contentDescription="No data for today"
         android:gravity="center"
-        android:text="No fixture for day"
+        android:text="No data for today"
         android:textColor="#111111"
         android:textSize="18sp" />
 

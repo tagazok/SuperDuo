@@ -1,11 +1,14 @@
 package barqsoft.footballscores.service;
 
 import android.app.IntentService;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +26,9 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import barqsoft.footballscores.DatabaseContract;
+import barqsoft.footballscores.FootScoresWidgetProvider;
 import barqsoft.footballscores.R;
+import barqsoft.footballscores.Utilies;
 
 /**
  * Created by yehya khaled on 3/2/2015.
@@ -47,6 +52,7 @@ public class myFetchService extends IntentService
 
     private void getData (String timeFrame)
     {
+        //timeFrame = "n4";
         //Creating fetch URL
         final String BASE_URL = "http://api.football-data.org/alpha/fixtures"; //Base URL
         final String QUERY_TIME_FRAME = "timeFrame"; //Time Frame parameter to determine days
@@ -136,6 +142,7 @@ public class myFetchService extends IntentService
         //JSON data
         // This set of league codes is for the 2015/2016 season. In fall of 2016, they will need to
         // be updated. Feel free to use the codes
+        final String DUMMYLEAGUE = "357";
         final String BUNDESLIGA1 = "394";
         final String BUNDESLIGA2 = "395";
         final String LIGUE1 = "396";
@@ -188,11 +195,13 @@ public class myFetchService extends IntentService
                 League = match_data.getJSONObject(LINKS).getJSONObject(SOCCER_SEASON).
                         getString("href");
                 League = League.replace(SEASON_LINK,"");
+                League = DUMMYLEAGUE;
                 //This if statement controls which leagues we're interested in the data from.
                 //add leagues here in order to have them be added to the DB.
                 // If you are finding no data in the app, check that this contains all the leagues.
                 // If it doesn't, that can cause an empty DB, bypassing the dummy data routine.
                 if(     League.equals(PREMIER_LEAGUE)      ||
+                        League.equals(DUMMYLEAGUE)         ||
                         League.equals(SERIE_A)             ||
                         League.equals(BUNDESLIGA1)         ||
                         League.equals(BUNDESLIGA2)         ||
@@ -255,6 +264,20 @@ public class myFetchService extends IntentService
                     //Log.v(LOG_TAG,Away);
                     //Log.v(LOG_TAG,Home_goals);
                     //Log.v(LOG_TAG,Away_goals);
+
+//                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+//                    int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, FootScoresWidgetProvider.class));
+//                    int layoutId = R.layout.football_scores_widget;
+//
+//                    for (int appWidgetId : appWidgetIds) {
+//                        RemoteViews views = new RemoteViews(getPackageName(), layoutId);
+//
+//                        views.setImageViewResource(R.id.home_crest, Utilies.getTeamCrestByTeamName(Home));
+//                        views.setTextViewText(R.id.blablabla, Home);
+//
+//
+//                        appWidgetManager.updateAppWidget(appWidgetId, views);
+//                    }
 
                     values.add(match_values);
                 }

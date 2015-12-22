@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="barqsoft.footballscores" >
 
-    <uses-permission
-        android:name="android.permission.INTERNET"
-        android:maxSdkVersion="22" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Found information here : http://android-developers.blogspot.fr/2013/03/native-rtl-support-in-android-42.html -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -36,6 +36,17 @@
                 android:value="barqsoft.footballscores.MainActivity" />
         </activity>
         <service android:name=".service.myFetchService" />
+
+        <receiver android:name="FootScoresWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/foot_scores_widget_info" />
+        </receiver>
+        <service android:name=".service.FootScoresWigetRemoveViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false" />
     </application>
 
 </manifest>

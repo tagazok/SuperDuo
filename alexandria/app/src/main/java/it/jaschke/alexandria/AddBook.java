@@ -10,6 +10,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,12 +70,12 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
             @Override
             public void afterTextChanged(Editable s) {
-                String ean =s.toString();
+                String ean = s.toString();
                 //catch isbn10 numbers
-                if(ean.length()==10 && !ean.startsWith("978")){
-                    ean="978"+ean;
+                if (ean.length() == 10 && !ean.startsWith("978")) {
+                    ean = "978" + ean;
                 }
-                if(ean.length()<13){
+                if (ean.length() < 13) {
                     clearFields();
                     return;
                 }
@@ -100,10 +101,10 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 CharSequence text = "This button should let you scan a book for its barcode!";
                 int duration = Toast.LENGTH_SHORT;
 
-                //Toast toast = Toast.makeText(context, text, duration);
-                //toast.show();
                 Intent intent = new Intent(getActivity(), ScannerActivity.class);
-                startActivity(intent);
+
+                // Thanks http://stackoverflow.com/questions/6147884/onactivityresult-not-being-called-in-fragment/6147919#6147919
+                startActivityForResult(intent, 111);
 
             }
         });
@@ -177,7 +178,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         String[] authorsArr = authors.split(",");
 
         ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",","\n"));
+        ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if(Patterns.WEB_URL.matcher(imgUrl).matches()){
             new DownloadImage((ImageView) rootView.findViewById(R.id.bookCover)).execute(imgUrl);
@@ -210,5 +211,15 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         activity.setTitle(R.string.scan);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 111 && resultCode == 111) {
+            Log.v("CODE", ScannerActivity.BARCODE);
+            ean.setText(data.getStringExtra(ScannerActivity.BARCODE));
+        }
     }
 }
